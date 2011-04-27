@@ -1,0 +1,65 @@
+2002-05-05  Richard Mortier  <mort@microsoft.com>
+
+	* (bgp.py) extended length attributes actually didn't work; now
+	  they do (tickled by parsing recent RouteViews data where
+	  MP_REACH_NLRI and MP_UNREACH_NLRI fields are to be found)
+
+	* (bgp.py) also fixed situations when NLRI field was prematurely
+	  truncated (I believe this relates to a Zebra bug in
+	  bgpd/bgp_dump.c where the allocated buffer doesn't allow space
+	  for the type specific header in addition to max. packet size and
+	  common header; gets tickled by UPDATES which are close to max
+	  packet size) 
+
+	* new release: 2.5
+
+2002-02-25  Richard Mortier  <mort@sprintlabs.com>
+
+	* finished table-dump.py, few bug fixes
+
+        * failure detection scripts + matlab; weight change scripts
+
+        * new release: 2.4
+
+2002-02-05  Richard Mortier  <mort@sprintlabs.com>
+
+        * new release: 2.3
+
+	* (table-dump.py) added table-dump.py enabling creation of RIB
+	  dumps from (single) UPDATE streams
+	
+        * (splice.py) ditto
+
+        * (mrtd.py) realised that timestamping is confused -- MRT
+          packet timestamps are seconds-since-UTC, filenames are
+          localtime; henceforth, all shall be based on
+          seconds-since-UTC.
+	
+	* ChangeLog begins!  released version is 2.2
+
+   =====================================================================
+
+                    PyRT: Python Routeing Toolkit
+
+                              ChangeLog
+                                   
+   Copyright (C) 2001 Richard Mortier <mort@sprintlabs.com>, Sprint ATL
+
+   =====================================================================
+
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License as
+   published by the Free Software Foundation; either version 2 of the
+   License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+   USA
+
+   =====================================================================
