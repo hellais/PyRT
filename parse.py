@@ -99,6 +99,9 @@ if __name__ == "__main__":
                     ((END_T   < 0) or (msg[0] <= END_T))):
 
                     rv  = mrt.parse(msg, VERBOSE)
+                    
+                    #if rv["V"]:
+                    #  print rv
                     cnt = cnt + 1
                     if VERBOSE > 1:
                         pprint.pprint(rv)

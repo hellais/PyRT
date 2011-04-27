@@ -755,7 +755,10 @@ class Isis:
 
             self._rtx_at = 0
 
+            print "####### JUST FOR DEBUG ####"
+            print vars(parseMacHdr(rx_ish))
             src_mac = parseMacHdr(rx_ish)[0]
+            print "#############"
             self._nbr_mac_addr = src_mac
 
             hdr_start = MAC_HDR_LEN + ISIS_HDR_LEN
@@ -1015,6 +1018,8 @@ class Isis:
     def processFsm(self, msg, verbose=1, level=0):
         nothing = ""
 
+        print "DEBUG"
+        print vars(parseMacHdr(msg))
         src_mac = parseMacHdr(msg)[0] 
         #(None, None, None, None,
         # msg_type, None, None, None) = parseIsisHdr(msg[MAC_HDR_LEN:])

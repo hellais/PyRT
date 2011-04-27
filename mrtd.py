@@ -27,6 +27,7 @@
 #
 
 import os, time, struct, getopt, sys, bgp, isis, math, pprint
+import gzip, bz2
 from mutils import *
 
 #-------------------------------------------------------------------------------
@@ -220,7 +221,10 @@ class Mrtd:
         self._file_size = file_size
         self._file_mode = file_mode
 
-        self._of        = open(self._file_name, file_mode)
+        if (self._file_name.endswith('.bz2')):
+          self._of = bz2.BZ2File(self._file_name)
+        else:
+          self._of        = open(self._file_name, file_mode)
         self._read      = ""
 
     #---------------------------------------------------------------------------
@@ -276,7 +280,7 @@ class Mrtd:
             
             print level*INDENT + "[ " + time.ctime(ptime) + " ]"
             print level*INDENT + "MRT packet: len: %d, type: %s, subtype:" %\
-                  (plen, MSG_TYPES[ptype]),
+                    (plen, MSG_TYPES[ptype]),
 
             try:
                 if   ptype == MSG_TYPES["PROTOCOL_BGP4MP"]:
@@ -299,8 +303,8 @@ class Mrtd:
 
             except (KeyError):
                 if verbose:
-                    print level*INDENT +\
-                          '[ *** Unsupported subtype: %d *** ]' % psubtype
+                    # print level*INDENT +\
+                    #      '[ *** Unsupported subtype: %d *** ]' % psubtype
                     return None
             
         if   ptype == MSG_TYPES["PROTOCOL_BGP"]:
@@ -526,6 +530,7 @@ class Mrtd:
             rv["V"] = bgp.parseBgpPdu(msg_type, msg_len, pdata, verbose, level)
 
         else:
+          if verbose > 1:
             print level*INDENT + "[ *** SUBTYPE: %d NOT PARSED *** ]" % psubtype
 
         return rv
@@ -592,7 +597,8 @@ class Mrtd:
             rv["V"] = bgp.parseBgpPdu(msg_type, msg_len, pdata, verbose, level)
 
         else:
-            print level*INDENT + "[ *** SUBTYPE: %d NOT PARSED *** ]" % psubtype
+            if verbose > 1:
+              print level*INDENT + "[ *** SUBTYPE: %d NOT PARSED *** ]" % psubtype
 
         return rv
             

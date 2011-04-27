@@ -112,8 +112,9 @@ def processEntry(rv):
     src_as, src_ip = rv["H"]["SRC_AS"], rv["H"]["SRC_IP"]
     ifc, afi = rv["H"]["IFC"], rv["H"]["AFI"]
 
-    for pfx in rv["V"]["V"]["UNFEASIBLE"]:
-        del TABLE[pfx]
+    # XXX Understand this part of code and make it works
+    #for pfx in rv["V"]["V"]["UNFEASIBLE"]:
+    #      del TABLE[pfx]
 
     astr = ""
     for attr in rv["V"]["V"]["PATH_ATTRS"].keys():
@@ -282,7 +283,9 @@ if __name__ == "__main__":
                 cnt = cnt + 1
                 if (START_T < 0) or (msg[0] >= START_T):
                     rv = mrt.parse(msg, VERBOSE)
-                    if ((rv["T"] == mrtd.MSG_TYPES["PROTOCOL_BGP"] and
+                    #print rv
+                    if rv:
+                      if ((rv["T"] == mrtd.MSG_TYPES["PROTOCOL_BGP"] and
                          rv["ST"] == mrtd.BGP_SUBTYPES["UPDATE"])
                         or
                         (rv["T"] == mrtd.MSG_TYPES["PROTOCOL_BGP4MP"] and
@@ -293,7 +296,6 @@ if __name__ == "__main__":
                          rv["ST"] == mrtd.BGP4MP_SUBTYPES["MESSAGE"] and
                          rv["V"]["T"] == bgp.MSG_TYPES["UPDATE"])
                         ):
-
                         processEntry(rv)
 
                         LAST_TM = msg[0]
