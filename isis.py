@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 
 ##     PyRT: Python Routeing Toolkit
 
@@ -751,15 +751,16 @@ class Isis:
             self._type   = atype
             self._tx_ish = tx_ish
             self._rx_ish = rx_ish
+            nothing = ""
 
             self._rtx_at = 0
 
-            (src_mac, None, None, None, None, None) = parseMacHdr(rx_ish)
+            src_mac = parseMacHdr(rx_ish)[0]
             self._nbr_mac_addr = src_mac
 
             hdr_start = MAC_HDR_LEN + ISIS_HDR_LEN
             hdr_end   = hdr_start + ISIS_HELLO_HDR_LEN
-            (None, src_id, ht, None, prio, lan_id) =\
+            nothing, src_id, ht, nothing, prio, lan_id =\
                    struct.unpack(">B 6s H H B 7s", rx_ish[hdr_start:hdr_end])
 
             self._holdtimer  = ht
@@ -1012,14 +1013,17 @@ class Isis:
     ############################################################################
  
     def processFsm(self, msg, verbose=1, level=0):
+        nothing = ""
 
-        (src_mac, None, None, None, None, None) = parseMacHdr(msg)
-        (None, None, None, None,
-         msg_type, None, None, None) = parseIsisHdr(msg[MAC_HDR_LEN:])
+        src_mac = parseMacHdr(msg)[0] 
+        #(None, None, None, None,
+        # msg_type, None, None, None) = parseIsisHdr(msg[MAC_HDR_LEN:])
+        (nothing, nothing, nothing, nothing,
+          msg_type, nothing, nothing, nothing) = parseIsisHdr(msg[MAC_HDR_LEN:])
 
         hdr_start = MAC_HDR_LEN + ISIS_HDR_LEN
         hdr_end   = hdr_start + ISIS_HELLO_HDR_LEN
-        (None, src_id, None, None, None, lan_id) =\
+        (nothing, src_id, nothing, nothing, nothing, lan_id) =\
                struct.unpack("> B 6s H H B 7s", msg[hdr_start:hdr_end])
 
         smac = str2hex(src_mac)
@@ -1179,10 +1183,11 @@ if __name__ == "__main__":
     
     try:
         timeout = Isis._holdtimer
+        nothing = ""
         while 1: # main loop
-
+          
             before  = time.time()
-            rfds, None, None = select.select([isis._sock], [], [], timeout)
+            rfds, nothing, nothing = select.select([isis._sock], [], [], timeout)
             after   = time.time()
             elapsed = after - before
 
